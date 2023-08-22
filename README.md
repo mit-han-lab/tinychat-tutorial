@@ -1,6 +1,18 @@
-# TinyLLMEngine: A Efficient Neural Network Library for LLM
+# Tutorial for Optimizing LLM on Edge Devices
 
-TinyLLMEngine is a powerful neural network library specifically designed for the efficient deployment of quantized large language models (LLMs) on edge devices.
+Running large language models (LLMs) on the edge is of great importance. By embedding LLMs directly into real-world systems such as in-car entertainment systems or spaceship control interfaces, users can access instant responses and services without relying on a stable internet connection. Moreover, this approach alleviates the inconvenience of queuing delays often associated with cloud services. As such, running LLMs on the edge not only enhances user experience but also addresses privacy concerns, as sensitive data remains localized and reduces the risk of potential breaches.
+
+However, despite their impressive capabilities, LLMs have traditionally been quite resource-intensive. They require considerable computational power and memory resources, which makes it challenging to run these models on edge devices with limited capabilities.
+
+In this lab, you will learn the following:
+* How to deploy an LLaMA2-7B-chat with TinyChatEngine on your computer.
+* Implement different optimization techniques (loop unrolling, multithreading, and SIMD programming) for the linear kernel.
+* Observe the end-to-end latency improvement achieved by each technique.
+
+
+## TinyChatEngine
+
+TinyChatEngine is a powerful neural network library specifically designed for the efficient deployment of quantized large language models (LLMs) on edge devices. In this 
 
 ![demo](assets/figures/chat.gif)
 
@@ -31,7 +43,7 @@ pacman -S --needed base-devel mingw-w64-x86_64-toolchain make unzip git
 
 ## Quantization and Model Support
 
-At present, we support int8 OPT and int4 LLaMA models for x86 and ARM CPUs as well as Apple's M-series GPUs. Quantized weights for int8 OPT models originate from [smoothquant](https://github.com/mit-han-lab/smoothquant)  and can be converted to TinyLLMEngine format using the provided conversion script [opt_smooth_exporter.py](transformer/opt_smooth_exporter.py). For LLaMA models, scripts are available for converting Huggingface format checkpoints to our [format](transformer/llama_exporter.py), and for quantizing them to specific methods [based on your device](transformer/model_quantizer.py). We also plan to support edge GPUs, which will be coming soon.
+At present, we support int8 OPT and int4 LLaMA models for x86 and ARM CPUs as well as Apple's M-series GPUs. Quantized weights for int8 OPT models originate from [smoothquant](https://github.com/mit-han-lab/smoothquant)  and can be converted to TinyChatEngine format using the provided conversion script [opt_smooth_exporter.py](transformer/opt_smooth_exporter.py). For LLaMA models, scripts are available for converting Huggingface format checkpoints to our [format](transformer/llama_exporter.py), and for quantizing them to specific methods [based on your device](transformer/model_quantizer.py). We also plan to support edge GPUs, which will be coming soon.
 
 ### Device-specific Quantization Methods
 
@@ -56,7 +68,7 @@ python model_quantizer.py --model_path models/LLaMA_7B --method QM_ARM --output_
 
 ### Download and deploy models from our Model Zoo
 
-We offer a selection of models that have been tested with TinyLLMEngine. These models can be readily downloaded and deployed on your device. To download a model, locate the target model's ID in the table below and use the associated script.
+We offer a selection of models that have been tested with TinyChatEngine. These models can be readily downloaded and deployed on your device. To download a model, locate the target model's ID in the table below and use the associated script.
 
 | Models  | Size | ID | Supported Precision |
 | ------------- | ------------- |  ------------- |  ------------- |
@@ -75,25 +87,25 @@ For instance, to download the quantized LLaMA-2-7B-chat model:
   python download_model.py --model LLaMA_7B_2_chat --QM QM_x86
   ```
 
-To deploy the quantized model with TinyLLMEngine, compile the chat program and run it with the model ID and precision.
+To deploy the quantized model with TinyChatEngine, compile the chat program and run it with the model ID and precision.
 
 ```
 make chat -j
 ./chat LLaMA_7B_2_chat INT4
 ```
 
-## Step-by-step to deploy LLaMA2-7B-chat with TinyLLMEngine
+## Step-by-step to deploy LLaMA2-7B-chat with TinyChatEngine
 
-Here, we provide step-by-step instructions to deploy LLaMA2-7B-chat with TinyLLMEngine from scratch.
+Here, we provide step-by-step instructions to deploy LLaMA2-7B-chat with TinyChatEngine from scratch.
 
 - Download the repo.
   ```bash
   # pull repo
-  git clone --recursive https://github.com/mit-han-lab/TinyLLMEngine.git
+  git clone --recursive https://github.com/mit-han-lab/TinyChatEngine.git
   ```
 - Download the quantized LLaMA2-7B-chat model from our model zoo.
   ```bash
-  cd TinyLLMEngine/transformer
+  cd TinyChatEngine/transformer
   ```
   - On a x86 device (e.g., Intel/AMD laptop)
     ```bash
