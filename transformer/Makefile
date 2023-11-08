@@ -1,6 +1,6 @@
 # Compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++11 -pthread -g -O2 -w
+CXXFLAGS = -std=c++11 -pthread -g -O0 -w
 CXXFLAGS += -DIMP=$(IMP)
 
 # Executable and source files
