@@ -104,13 +104,24 @@ void MatmulOperator::mat_mul_multithreading(struct matmul_params* params) {
     quantize_fp32_to_int8(A->data_ptr, A->int8_data_ptr, params->A_scales, A->row * A->column, block_size);
 
     int m = C->row, n = C->column, k = A->column;
-
+    // printf("matrix dimensions: m = %d, n = %d, k = %d\n", m, n, k);
     const int num_thread = 4;
     pthread_t thread_pool[num_thread];
     struct multithreading_thread_args threads_args[num_thread];
 
     // TODO: Thread creation
+    for (int i = 0; i < num_thread; ++i) { 
+        threads_args[i].start = i * (n / num_thread);
+        threads_args[i].end = (i + 1) * (n / num_thread);
+        threads_args[i].params = params;
+        // printf("Thread %d: start = %d, end = %d\n", i, threads_args[i].start, threads_args[i].end);
+
+        pthread_create(&thread_pool[i], nullptr, multithreading_worker_func, &threads_args[i]);
+    }
 
     // TODO: Join threads
+    for (int i = 0; i < num_thread; ++i) { 
+        pthread_join(thread_pool[i], nullptr);
+    }
 };
 }  // namespace matmul
