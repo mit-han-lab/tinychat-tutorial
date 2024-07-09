@@ -139,8 +139,12 @@ void MatmulOperator::mat_mul_simd_programming(struct matmul_params *params) {
                 // (2) Change the sign of activation (a0-a31 and a32-a63) depending on the sign of corresponding weights
                 // (stored as another variable) (3) Perform dot product with _mm256_maddubs_epi16 and store the lower
                 // and upper halves sum in `dot` and `dot2`
+                //_mm256_sign_epi8(a, b) negates packed 8bit integers in a when the corresponding 8bit integer in b is negative.
+                // also zeros any element in result vector when b is zero for 
                 __m256i dot, dot2;
                 // Get absolute values of x vectors
+                // since the operation takes the neg value of a for every negative b, if you 
+                // you do the operation with itself it will just flip all the negatives 
                 const __m256i ax = _mm256_sign_epi8(w_0, w_0);
                 const __m256i ax2 = _mm256_sign_epi8(w_128, w_128);
                 // Load activation
@@ -154,6 +158,8 @@ void MatmulOperator::mat_mul_simd_programming(struct matmul_params *params) {
                 // Hint: use `_mm256_maddubs_epi16` to complete the following computation
                 // dot = ax * sy
                 // dot2 = ax2 * sy2
+                __m256i dot = _mm256_maddubs_epi16(ax, sy);
+                __m256i dot2 = _mm256_maddubs_epi16(ax2, sy2);
 
                 // Convert int32 vectors to floating point vectors
                 const __m256i ones = _mm256_set1_epi16(1);
@@ -165,7 +171,7 @@ void MatmulOperator::mat_mul_simd_programming(struct matmul_params *params) {
                 // Create vectors for scales and apply them to intermediate results
                 __m256 v_s = _mm256_set1_ps(s_ptr[0] * sa_ptr[0]);
                 __m256 v_s2 = _mm256_set1_ps(s_ptr[1] * sa_ptr[1]);
-                acc0 = _mm256_fmadd_ps(intermediate, v_s, acc0);
+                acc0 = _mm256_fmadd_ps(intermediate, v_s, acc0);  // _mm256_fmadd_ps(a, b, c) -> multiply a, b and add to c 
                 acc0 = _mm256_fmadd_ps(intermediate2, v_s2, acc0);
                 s_ptr += 2;
                 sa_ptr += 2;
