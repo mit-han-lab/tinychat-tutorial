@@ -55,7 +55,7 @@ Qmodels = {
             "md5sum": "4118dca49c39547929d9e02d67838153",
         },
         "LLaMA_7B_2_chat": {
-            "url": "https://www.dropbox.com/scl/fi/1trpw92vmh4czvl28hkv0/LLaMA_7B_2_chat.zip?rlkey=dy1pdek0147gnuxdzpodi6pkt&dl=1",  # noqa: E501
+            "url": "https://huggingface.co/mit-han-lab/tinychatengine-model-zoo/resolve/main/QM_ARM/LLaMA_7B_2_chat.zip?download=true",  # noqa: E501
             "md5sum": "af20c96de302c503a9fcfd5877ed0600",
         },
     },
@@ -69,7 +69,7 @@ Qmodels = {
             "md5sum": "08c118ec34645808cd2d21678ad33659",
         },
         "LLaMA_7B_2_chat": {
-            "url": "https://www.dropbox.com/scl/fi/vu7wnes1c7gkcegg854ys/LLaMA_7B_2_chat.zip?rlkey=q61o8fpc954g1ke6g2eaot7cf&dl=1",  # noqa: E501
+            "url": "https://huggingface.co/mit-han-lab/tinychatengine-model-zoo/resolve/main/QM_x86/LLaMA_7B_2_chat.zip?download=true",  # noqa: E501
             "md5sum": "18f2193ccb393c7bca328f42427ef233",
         },
     },
