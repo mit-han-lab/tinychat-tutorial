@@ -9,7 +9,24 @@
 #include "common.h"
 
 #ifdef QM_ARM
+#ifdef __ARM_FEATURE_DOTPROD
 #include <arm_neon.h>
+// Native implementation using vdotq_s32 when available
+static inline int32x4_t my_vdotq_s32(int32x4_t accum, int8x16_t a, int8x16_t b) { return vdotq_s32(accum, a, b); }
+
+#else
+#include <arm_neon.h>
+// Fallback implementation when vdotq_s32 is not available
+static inline int32x4_t my_vdotq_s32(int32x4_t accum, int8x16_t a, int8x16_t b) {
+    // Multiply and widen results to 16-bit integers
+    int16x8_t result_low = vmull_s8(vget_low_s8(a), vget_low_s8(b));
+    int16x8_t result_high = vmull_s8(vget_high_s8(a), vget_high_s8(b));
+
+    // Sum pairs of 16-bit values and accumulate into 32-bit integers
+    return vaddq_s32(accum, vaddq_s32(vaddl_s16(vget_low_s16(result_low), vget_high_s16(result_low)),
+                                      vaddl_s16(vget_low_s16(result_high), vget_high_s16(result_high))));
+}
+#endif
 #endif
 #ifdef QM_x86
 #include <immintrin.h>
