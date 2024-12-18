@@ -7,8 +7,9 @@
 # 3: simd_programming
 # 4: multithreading_loop_unrolling
 # 5: all_techniques
-keys=("reference" "loop_unrolling" "multithreading" "simd_programming" "multithreading_loop_unrolling" "all_techniques")
-values=("0" "1" "2" "3" "4" "5")
+# 6: cache_blocking
+keys=("reference" "loop_unrolling" "multithreading" "simd_programming" "multithreading_loop_unrolling" "all_techniques" "cache_blocking")
+values=("0" "1" "2" "3" "4" "5" "6")
 
 # If a implementation is provided to the script, map it to the corresponding argument
 if [ "$#" -eq 1 ]; then

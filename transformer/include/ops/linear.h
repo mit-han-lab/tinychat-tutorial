@@ -56,6 +56,8 @@ class Linear_FP_int4 {
     std::string profile_name = "multithreading_loop_unrolling";
 #elif IMP == 5
     std::string profile_name = "all_techniques";
+#elif IMP == 6
+    std::string profile_name = "cache_blocking";
 #else
     std::string profile_name = "Unkown";
 #endif
