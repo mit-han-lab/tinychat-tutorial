@@ -86,7 +86,7 @@ void MatmulOperator::mat_mul_simd_programming(struct matmul_params *params) {
 #ifdef QM_x86
             // order of weights with QM_x86:
             // origin order: (w0,w1), (w2,w3), (w4,w5), (w6,w7), (w8, w9), ... (w62,w63)
-            // QM_ARM order: (w0,w32),(w1,w33),(w2,w34),(w3,w35),(w4, w36),... (w31,w63)
+            // QM_x86 order: (w0,w32),(w1,w33),(w2,w34),(w3,w35),(w4, w36),... (w31,w63)
             //               |--|
             //               4 bits
             //               |------|

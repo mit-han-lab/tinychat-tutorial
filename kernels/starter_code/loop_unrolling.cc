@@ -74,7 +74,7 @@ void MatmulOperator::mat_mul_loop_unrolling(struct matmul_params *params) {
                 float s_a_2nd = params->A_scales[(row * k + ch) / block_size + 1];
                 // order of weights with QM_x86:
                 // origin order: (w0,w1), (w2,w3), (w4,w5), (w6,w7), (w8, w9), ... (w62,w63)
-                // QM_ARM order: (w0,w32),(w1,w33),(w2,w34),(w3,w35),(w4, w36),... (w31,w63)
+                // QM_x86 order: (w0,w32),(w1,w33),(w2,w34),(w3,w35),(w4, w36),... (w31,w63)
                 //               |--|
                 //               4 bits
                 //               |------|

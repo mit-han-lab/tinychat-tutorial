@@ -63,7 +63,7 @@ void MatmulOperator::mat_mul_reference(struct matmul_params *params) {
                 float s_a_2nd = params->A_scales[(row * k + ch) / block_size + 1];
                 // order of weights with QM_x86:
                 // origin order: (w0,w1), (w2,w3), (w4,w5), (w6,w7), (w8, w9), ... (w62,w63)
-                // QM_ARM order: (w0,w32),(w1,w33),(w2,w34),(w3,w35),(w4, w36),... (w31,w63)
+                // QM_x86 order: (w0,w32),(w1,w33),(w2,w34),(w3,w35),(w4, w36),... (w31,w63)
                 //               |--|
                 //               4 bits
                 //               |------|
@@ -77,10 +77,10 @@ void MatmulOperator::mat_mul_reference(struct matmul_params *params) {
                     // decode a packed byte into two int8 in the range of (-8, 7)
                     uint8_t packed_int4_0 = w_int4[qj];
                     signed char w_de_0 = (packed_int4_0 & 0x0F) - 8.0;
-                    signed char w_de_16 = (packed_int4_0 >> 4) - 8.0;
+                    signed char w_de_32 = (packed_int4_0 >> 4) - 8.0;
                     // int8 multiply and accumulate operation
                     intermediate_sum += a_int8[qj] * w_de_0;
-                    intermediate_sum_2nd += a_int8[qj + 32] * w_de_16;
+                    intermediate_sum_2nd += a_int8[qj + 32] * w_de_32;
                 }
                 // dequantize the sum into floating point
                 acc += (float)intermediate_sum * s_a * s_w;
