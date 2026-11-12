@@ -2,6 +2,9 @@
 CXX = g++
 CXXFLAGS = -std=c++11 -pthread -g -O0 -w
 CXXFLAGS += -DIMP=$(IMP)
+# Some sources use pthread_t without including <pthread.h>; newer libc++
+# (e.g. Homebrew LLVM 19+) no longer pulls it in transitively.
+CXXFLAGS += -include pthread.h
 
 # Executable and source files
 TEST_TARGET = test_linear
